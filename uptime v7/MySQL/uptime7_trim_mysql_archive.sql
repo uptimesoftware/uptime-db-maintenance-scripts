@@ -22,6 +22,9 @@ CREATE PROCEDURE trim_uptime_data()
 -- 2. Verify the archive policy settings are correct in GUI (Config > Archive Policy > Verify months values are 
 -- correct and that "Enable Archiving" is unchecked. 
 -- 3. Then call the procedure "TRIM_UPTIME_DATA" to have it actually run and delete the data.
+--
+-- Note: This uses the database name in the script on 2 lines so if you have a database name other then uptime will 
+-- need to update this value can search for "table_schema=" and update the value uptime just after that.
 -- -------------------------------------------------------------------------------------------------------------------
 BEGIN
     DECLARE trimdate       DATE;
