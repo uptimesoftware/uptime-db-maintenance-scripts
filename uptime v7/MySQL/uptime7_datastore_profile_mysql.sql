@@ -1,3 +1,25 @@
+-- --------------------------------------Details for this Script------------------------------------------------------
+-- Instructions to run dbprofiler script against MySQL bundled database. 
+--  For LINUX
+--
+--  1. Save the dbprofiler script in the mysql/bin directory (full path <uptime dir>/uptime/mysql/bin)
+--  2. Run the below command from this directory:
+-- ./mysql -uroot -puptimerocks -P3308 --protocol=TCP --database=uptime <uptime7_datastore_profile_mysql.sql>result.txt
+--  
+--  For Windows
+--  1. Save the dbprofiler script to mysql\bin folder (full path <uptime dir>\uptime\mysql\bin)
+--  2. Open a command prompt and cd to mysql\bin directory and run the below command
+--
+--  mysql -uroot -puptimerocks -P3308 --protocol=TCP --database=uptime <uptime7_datastore_profile_mysql.sql>result.txt
+--
+--  Now you should be able to review the results in the reslut.txt file which should be located in mysql\bin directory. 
+--
+--  The information about archiving settings policy should be below this line
+--  ----- Archive policy settings -----
+-- 
+--  This information about historical data should be below this line
+--  ----- Finding oldest data in performance tables -----
+-- -------------------------------------------------------------------------------------------------------------------
 select '----- STARTING: profiling your DataStore, this may take a while -----';
 select '----- current time is -----';
 select now();
