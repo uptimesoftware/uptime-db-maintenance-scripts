@@ -1,3 +1,35 @@
+  -- --------------------------------------Details for this Script------------------------------------------------------
+-- ===================================================== 
+--  Step 1. STORE THE PROCEDURE  
+-- ===================================================== 
+-- 
+-- 1.	Save the trim script in the <uptime_install>/mysql/bin
+-- 2.	Run the below command to create stored procedure from the <uptime_install>/mysql/bin directory
+-- mysql -uroot -puptimerocks -P3308 --protocol=TCP uptime < name of the trim script
+-- 3.	Soon the above query is executed successfully without any error 
+-- messages. It indicates that the stored procedure has been created in the up.time database then follow the second set of instructions ‘CALL THE PROCEDURE’. 
+-- 
+-- If you see an error message like " ERROR 
+-- **** (***** ) at line 5: Table 'mysql.proc' doesn't exist" while running the above query then follow the below instructions. 
+-- a)	Run the following query mysql_upgrade -uroot -puptimerocks in the same location to troubleshoot . 
+-- b)	After running the "./mysql_upgrade " query,  re-run the query 
+-- mysql -uroot -puptimerocks -P3308 --protocol=TCP uptime < name of the script
+-- c)	 Verify whether the query has executed successfully without any errors. If yes, follow the instructions to CALL THE PROCEDURE.
+-- 
+-- ===================================================== 	
+-- Step 2. CALL THE PROCEDURE
+-- ===================================================== 
+-- 
+-- 1. Log into the uptime database by running the below command from 
+-- <uptime install>/mysql/bin directory. 
+-- mysql -uroot -puptimerocks -P3308 --protocol=TCP 
+-- 2. Now you should be logged into the database, run the below command to use the database 
+-- use uptime;  
+-- 3. Run the below command to call the trim procedure  
+-- call trim_uptime_data; 
+-- -------------------------------------------------------------------------------------------------------------------
+
+
 DROP PROCEDURE IF EXISTS trim_uptime_data;
 
 DELIMITER //
