@@ -3,10 +3,11 @@
 --  Step 1. STORE THE PROCEDURE  
 -- ===================================================== 
 -- 
--- 1.	Save the trim script in the <uptime_install>/mysql/bin
--- 2.	Run the below command to create stored procedure from the <uptime_install>/mysql/bin directory
--- mysql -uroot -puptimerocks -P3308 --protocol=TCP uptime < name of the trim script
--- 3.	Soon the above query is executed successfully without any error 
+-- 1.	Adjust the retaindays variable on line 62 in line with the number of days of data you want to keep.
+-- 2. Save the trim script in the <uptime_install>/mysql/bin
+-- 3.	Run the below command to create stored procedure from the <uptime_install>/mysql/bin directory
+-- mysql -uroot -puptimerocks -P3308 --protocol=TCP -A uptime < name of the trim script
+-- 4.	Soon the above query is executed successfully without any error 
 -- messages. It indicates that the stored procedure has been created in the up.time database then follow the second set of instructions ‘CALL THE PROCEDURE’. 
 -- 
 -- If you see an error message like " ERROR 
@@ -22,7 +23,7 @@
 -- 
 -- 1. Log into the uptime database by running the below command from 
 -- <uptime install>/mysql/bin directory. 
--- mysql -uroot -puptimerocks -P3308 --protocol=TCP 
+-- mysql -uroot -puptimerocks -P3308 --protocol=TCP -A uptime
 -- 2. Now you should be logged into the database, run the below command to use the database 
 -- use uptime;  
 -- 3. Run the below command to call the trim procedure  
