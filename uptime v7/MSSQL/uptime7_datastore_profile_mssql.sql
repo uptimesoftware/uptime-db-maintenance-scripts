@@ -9,6 +9,7 @@ select '----- finding oldest data in performance tables -----';
 select 'aggregate', min(sample_time) 'sample_time' from performance_sample ps, performance_aggregate pt where ps.id = pt.sample_id;
 select 'cpu', min(sample_time) 'sample_time' from performance_sample ps, performance_cpu pt where ps.id = pt.sample_id;
 select 'disk', min(sample_time) 'sample_time' from performance_sample ps, performance_disk pt where ps.id = pt.sample_id;
+select 'disk_total', min(sample_time) 'sample_time' from performance_sample ps, performance_disk_total pt where ps.id = pt.sample_id;
 select 'esx3_workload', min(sample_time) 'sample_time' from performance_sample ps, performance_esx3_workload pt where ps.id = pt.sample_id;
 select 'fscap', min(sample_time) 'sample_time' from performance_sample ps, performance_fscap pt where ps.id = pt.sample_id;
 select 'lpar_workload', min(sample_time) 'sample_time' from performance_sample ps, performance_lpar_workload pt where ps.id = pt.sample_id;
