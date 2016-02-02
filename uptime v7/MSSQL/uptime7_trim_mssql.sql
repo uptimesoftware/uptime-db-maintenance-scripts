@@ -1,5 +1,5 @@
 /*
-	 uptime7_trim_mssql.sql,v 3.0 2014/09/3 
+	 uptime7_trim_mssql.sql,v 3.1 2016/02/02 
 
 	This script will delete data from designated tables in the the up.time DataStore.
 
@@ -156,7 +156,7 @@ INSERT #SUPPORT_DBCLEANUP VALUES ('net_device_perf_port', 'SAMPLE_ID < ' + @CUTO
 -- INSERT #SUPPORT_DBCLEANUP VALUES ('ERDC_STATUS_TRANSITION_LOG', 'SAMPLETIME < ' + @CUTOFF_DATE_S , 0, 0, 0 )
 -- INSERT #SUPPORT_DBCLEANUP VALUES ('PERFORMANCE_SAMPLE', 'ID < ' + @CUTOFF_SAMPLEID , 0, 0, 0)
 --v6 table
--- INSERT #SUPPORT_DBCLEANUP VALUES ('vmware_perf_sample', 'ID < ' + @CUTOFF_VMSAMPLEID , 0, 0, 0)
+-- INSERT #SUPPORT_DBCLEANUP VALUES ('vmware_perf_sample', 'SAMPLE_ID < ' + @CUTOFF_VMSAMPLEID , 0, 0, 0)
 --v7 table
 -- INSERT #SUPPORT_DBCLEANUP VALUES ('net_device_perf_sample', 'ID < ' + @CUTOFF_NDSAMPLEID , 0, 0, 0)
 
