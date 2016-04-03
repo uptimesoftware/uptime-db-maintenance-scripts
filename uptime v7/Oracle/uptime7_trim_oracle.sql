@@ -262,7 +262,7 @@ PROCEDURE trim_uptime_data IS
 				dbms_application_info.set_session_longops(rindex, slno, 'up.time Trim', obj, 0, 1, 1, 'rows in ' || line.table_name, 'rows');
 				
 				-- Getting number of rows to delete for current retained data table
-				sql_stmt := 'SELECT count(*) FROM ' || line.table_name || ' WHERE sampletime < ''' || trimdate || '''';
+				sql_stmt := 'SELECT count(*) FROM ' || line.table_name || ' WHERE sampletime < TO_DATE(''' || trimdate || ''', ''YYYY-MM-DD HH24:MI:SS'')';
 				EXECUTE IMMEDIATE sql_stmt INTO samplesnum;
 				
 				-- set iteration counter to zero
@@ -277,7 +277,7 @@ PROCEDURE trim_uptime_data IS
 					dbms_application_info.set_session_longops(rindex, slno, 'up.time Trim', obj, 0, i+1, iterations, 'Trimming ' || line.table_name, 'row delete iterations');
 					
 					-- delete from retained data table
-					sql_stmt := 'DELETE FROM ' || line.table_name || ' WHERE (sampletime < ''' || trimdate || ''') AND ROWNUM <= ' || rownumber;
+					sql_stmt := 'DELETE FROM ' || line.table_name || ' WHERE (sampletime < TO_DATE(''' || trimdate || ''', ''YYYY-MM-DD HH24:MI:SS'')) AND ROWNUM <= ' || rownumber;
 					-- DBMS_OUTPUT.put_line(sql_stmt);
 					EXECUTE IMMEDIATE sql_stmt;
 					COMMIT;
@@ -308,7 +308,7 @@ PROCEDURE trim_uptime_data IS
 				dbms_application_info.set_session_longops(rindex, slno, 'up.time Trim', obj, 0, i+1, iterations, 'Trimming ranged_object_value', 'row delete iterations');
 				
 				-- delete from ranged_object_value
-				sql_stmt := 'DELETE FROM ranged_object_value WHERE (sample_time < ''' || trimdate || ''') AND ROWNUM <= ' || rownumber;
+				sql_stmt := 'DELETE FROM ranged_object_value WHERE (sample_time < TO_DATE(''' || trimdate || ''', ''YYYY-MM-DD HH24:MI:SS'' )) AND ROWNUM <= ' || rownumber;
 				-- DBMS_OUTPUT.put_line(sql_stmt);
 				EXECUTE IMMEDIATE sql_stmt;
 				COMMIT;
