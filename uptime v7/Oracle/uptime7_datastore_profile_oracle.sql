@@ -1,11 +1,10 @@
 set serveroutput on;
 set pagesize 1000;
 set linesize 1000;
-SELECT '----- STARTING: profiling your DataStore, this may take a while -----' "." FROM DUAL;
-SELECT '----- current time is -----' "." FROM DUAL;
-select sysdate from dual;
+SELECT '----- STARTING: profiling your DataStore, this may take a while -----' " " FROM DUAL;
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') "- current time is -" FROM DUAL;
 
-SELECT '----- Refresh stats on all performance tables -----' "." FROM DUAL;
+SELECT '----- Refresh stats on all performance tables -----' " " FROM DUAL;
 EXEC DBMS_STATS.gather_table_stats(USER, 'PERFORMANCE_SAMPLE', cascade => TRUE);
 EXEC DBMS_STATS.gather_table_stats(USER, 'PERFORMANCE_AGGREGATE', cascade => TRUE);
 EXEC DBMS_STATS.gather_table_stats(USER, 'PERFORMANCE_CPU', cascade => TRUE);
@@ -51,73 +50,118 @@ EXEC DBMS_STATS.gather_table_stats(USER, 'net_device_perf_port', cascade => TRUE
 
 
 
-SELECT '----- current time is -----' "." FROM DUAL;
-select sysdate from dual;
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') "- current time is -" FROM DUAL;
 
-SELECT '----- archive policy settings -----' "." FROM DUAL;
-select 'policy', id, type, months, last_run from archive_policy;
+SELECT '----- archive policy settings -----' " " FROM DUAL;
+column type format a30;
+column last_run format a9;
+select * from archive_policy;
 
-SELECT '----- finding oldest data in performance tables -----' "." FROM DUAL;
-select 'aggregate', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_aggregate);
-select 'cpu', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_cpu);
-select 'disk', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_disk);
-select 'disk_total', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_disk_total);
-select 'esx3_workload', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_esx3_workload);
-select 'fscap', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_fscap);
-select 'lpar_workload', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_lpar_workload);
-select 'network', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_network);
-select 'nrm', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_nrm);
-select 'psinfo', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_psinfo);
-select 'vxvol', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_vxvol);
-select 'who', ps.sample_time from performance_sample ps where ps.id = (select min(sample_id) from performance_who);
-select 'decimal_data', sampletime from erdc_decimal_data where erdc_int_data_id = (select min(erdc_int_data_id) from erdc_decimal_data);
-select 'int_data', sampletime from erdc_int_data where erdc_int_data_id = (select min(erdc_int_data_id) from erdc_int_data);
-select 'string_data', sampletime from erdc_string_data where erdc_int_data_id = (select min(erdc_int_data_id) from erdc_string_data);
-select 'ranged_data', sample_time from ranged_object_value where id = (select min(id) from ranged_object_value);
+SELECT '----- finding oldest data in performance tables -----' " " FROM DUAL;
+column "aggregate oldest sample time" format a30;
+column "cpu oldest sample time" format a30;
+column "disk oldest sample time" format a30;
+column "disk_total oldest sample time" format a30;
+column "esx3_workload oldest smpl time" format a30;
+column "fscap oldest sample time" format a30;
+column "lpar_workload oldest smpl time" format a30;
+column "network oldest sample time" format a30;
+column "nrm oldest sample time" format a30;
+column "psinfo oldest sample time" format a30;
+column "vxvol oldest sample time" format a30;
+column "who oldest sample time" format a30;
+column "decimal_data oldest smpl time" format a30;
+column "int_data oldest sample time" format a30;
+column "string_data oldest sampl time" format a30;
+column "ranged_data oldest sampl time" format a30;
 
+column "vmware_perf_aggregate" format a30;
+column "vmware_perf_cluster" format a30;
+column "vmware_perf_datastore_usage" format a30;
+column "vmware_perf_datastore_vm_usage" format a30;
+column "vmware_perf_disk_rate" format a30;
+column "vmware_perf_entitlement" format a30;
+column "vmware_perf_host_cpu" format a30;
+column "vmware_perf_host_disk_io" format a30;
+column "vmware_perf_host_disk_io_adv" format a30;
+column "vmware_perf_host_network" format a30;
+column "vmware_perf_host_power_state" format a30;
+column "vmware_perf_mem" format a30;
+column "vmware_perf_mem_advanced" format a30;
+column "vmware_perf_network_rate" format a30;
+column "vmware_perf_vm_cpu" format a30;
+column "vmware_perf_vm_disk_io" format a30;
+column "vmware_perf_vm_network" format a30;
+column "vmware_perf_vm_power_state" format a30;
+column "vmware_perf_vm_storage_usage" format a30;
+column "vmware_perf_vm_vcpu" format a30;
+column "vmware_perf_watts" format a30;
 
-select 'vmware_perf_aggregate', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_aggregate);
-select 'vmware_perf_cluster', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_cluster);
-select 'vmware_perf_datastore_usage', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_datastore_usage);
-select 'vmware_perf_datastore_vm_usage', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_datastore_vm_usage);
-select 'vmware_perf_disk_rate', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_disk_rate);
-select 'vmware_perf_entitlement', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_entitlement);
-select 'vmware_perf_host_cpu', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_cpu);
-select 'vmware_perf_host_disk_io', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_disk_io);
-select 'vmware_perf_host_disk_io_adv', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_disk_io_adv);
-select 'vmware_perf_host_network', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_network);
-select 'vmware_perf_host_power_state', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_power_state);
-select 'vmware_perf_mem', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_mem);
-select 'vmware_perf_mem_advanced', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_mem_advanced);
-select 'vmware_perf_network_rate', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_network_rate);
-select 'vmware_perf_vm_cpu', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_cpu);
-select 'vmware_perf_vm_disk_io', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_disk_io);
-select 'vmware_perf_vm_network', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_network);
-select 'vmware_perf_vm_power_state', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_power_state);
-select 'vmware_perf_vm_storage_usage', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_storage_usage);
-select 'vmware_perf_vm_vcpu', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_vcpu);
-select 'vmware_perf_watts', sample_time from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_watts);
+column "net_device_perf_ping" format a30;
+column "net_device_perf_port" format a30;
 
-select 'net_device_perf_ping', sample_time from net_device_perf_sample where id = (select min(sample_id) from net_device_perf_ping);
-select 'net_device_perf_port', sample_time from net_device_perf_sample where id = (select min(sample_id) from net_device_perf_port);
+select ps.sample_time "aggregate oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_aggregate);
+select ps.sample_time "cpu oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_cpu);
+select ps.sample_time "disk oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_disk);
+select ps.sample_time "disk_total oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_disk_total);
+select ps.sample_time "esx3_workload oldest smpl time" from performance_sample ps where ps.id = (select min(sample_id) from performance_esx3_workload);
+select ps.sample_time "fscap oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_fscap);
+select ps.sample_time "lpar_workload oldest smpl time" from performance_sample ps where ps.id = (select min(sample_id) from performance_lpar_workload);
+select ps.sample_time "network oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_network);
+select ps.sample_time "nrm oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_nrm);
+select ps.sample_time "psinfo oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_psinfo);
+select ps.sample_time "vxvol oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_vxvol);
+select ps.sample_time "who oldest sample time" from performance_sample ps where ps.id = (select min(sample_id) from performance_who);
+select sampletime "decimal_data oldest smpl time" from erdc_decimal_data where erdc_int_data_id = (select min(erdc_int_data_id) from erdc_decimal_data);
+select sampletime "int_data oldest sample time" from erdc_int_data where erdc_int_data_id = (select min(erdc_int_data_id) from erdc_int_data);
+select sampletime "string_data oldest sampl time" from erdc_string_data where erdc_int_data_id = (select min(erdc_int_data_id) from erdc_string_data);
+select sample_time "ranged_data oldest sampl time" from ranged_object_value where id = (select min(id) from ranged_object_value);
 
-SELECT '----- finding total collected samples for recent months -----' "." FROM DUAL;
-select 'sample_counts:', TO_CHAR(ps.sample_time, 'YYYY') "Year", TO_CHAR(ps.sample_time, 'MM') "Month", count(id)
+select sample_time "vmware_perf_aggregate" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_aggregate);
+select sample_time "vmware_perf_cluster" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_cluster);
+select sample_time "vmware_perf_datastore_usage" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_datastore_usage);
+select sample_time "vmware_perf_datastore_vm_usage" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_datastore_vm_usage);
+select sample_time "vmware_perf_disk_rate" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_disk_rate);
+select sample_time "vmware_perf_entitlement" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_entitlement);
+select sample_time "vmware_perf_host_cpu" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_cpu);
+select sample_time "vmware_perf_host_disk_io" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_disk_io);
+select sample_time "vmware_perf_host_disk_io_adv" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_disk_io_adv);
+select sample_time "vmware_perf_host_network" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_network);
+select sample_time "vmware_perf_host_power_state" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_host_power_state);
+select sample_time "vmware_perf_mem" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_mem);
+select sample_time "vmware_perf_mem_advanced" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_mem_advanced);
+select sample_time "vmware_perf_network_rate" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_network_rate);
+select sample_time "vmware_perf_vm_cpu" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_cpu);
+select sample_time "vmware_perf_vm_disk_io" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_disk_io);
+select sample_time "vmware_perf_vm_network" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_network);
+select sample_time "vmware_perf_vm_power_state" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_power_state);
+select sample_time "vmware_perf_vm_storage_usage" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_storage_usage);
+select sample_time "vmware_perf_vm_vcpu" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_vm_vcpu);
+select sample_time "vmware_perf_watts" from vmware_perf_sample where sample_id = (select min(sample_id) from vmware_perf_watts);
+
+select sample_time "net_device_perf_ping" from net_device_perf_sample where id = (select min(sample_id) from net_device_perf_ping);
+select sample_time "net_device_perf_port" from net_device_perf_sample where id = (select min(sample_id) from net_device_perf_port);
+
+SELECT '----- finding total collected samples for recent months -----' " " FROM DUAL;
+column "year" format a5;
+column "month" format a5;
+select TO_CHAR(ps.sample_time, 'YYYY') "YEAR", TO_CHAR(ps.sample_time, 'MM') "MONTH", count(id) "SAMPLES"
 from performance_sample ps
 group by TO_CHAR(ps.sample_time, 'YYYY'), TO_CHAR(ps.sample_time, 'MM')
 order by TO_CHAR(ps.sample_time, 'YYYY'), TO_CHAR(ps.sample_time, 'MM');
 
-SELECT '----- finding sample_id by month -----' "." FROM DUAL;
-select 'sample_id:', TO_CHAR(ps.sample_time, 'YYYY') "Year", TO_CHAR(ps.sample_time, 'MM') "Month", min(id)
+SELECT '----- finding sample_id by month -----' " " FROM DUAL;
+select TO_CHAR(ps.sample_time, 'YYYY') "YEAR", TO_CHAR(ps.sample_time, 'MM') "MONTH", min(id) "MIN ID"
 from performance_sample ps
 group by TO_CHAR(ps.sample_time, 'YYYY'), TO_CHAR(ps.sample_time, 'MM')
 order by TO_CHAR(ps.sample_time, 'YYYY'), TO_CHAR(ps.sample_time, 'MM');
 
-SELECT '----- table info -----' "." FROM DUAL;
-select table_name, tablespace_name, num_rows, avg_row_len, last_analyzed, partitioned from user_tables;
+SELECT '----- table info -----' " " FROM DUAL;
+column table_name format a30;
+column tablespace_name format a30;
+select table_name, tablespace_name, num_rows, avg_row_len, last_analyzed "ANALYZED", partitioned from user_tables;
 
-SELECT '----- current time is -----' "." FROM DUAL;
-select sysdate from dual;
+SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') "- current time is -" FROM DUAL;
 
-SELECT '----- FINISHED please send output to support -----' "." FROM DUAL;
+SELECT '----- FINISHED please send output to support -----' " " FROM DUAL;
 
