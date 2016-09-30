@@ -159,7 +159,8 @@ order by TO_CHAR(ps.sample_time, 'YYYY'), TO_CHAR(ps.sample_time, 'MM');
 SELECT '----- table info -----' " " FROM DUAL;
 column table_name format a30;
 column tablespace_name format a30;
-select table_name, tablespace_name, num_rows, avg_row_len, last_analyzed "ANALYZED", partitioned from user_tables;
+select table_name, tablespace_name, num_rows, avg_row_len, last_analyzed "ANALYZED", partitioned from user_tables 
+order by table_name;
 
 SELECT TO_CHAR(SYSDATE, 'YYYY-MM-DD HH24:MI:SS') "- current time is -" FROM DUAL;
 
